@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const InternalAssessment = require('./models/InternalAssessment');
 const User = require('./models/User');
 
-const uri = 'mongodb://localhost:27017/ecolearn';
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/acadivio';
 
 async function debug() {
     try {

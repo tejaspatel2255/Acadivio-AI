@@ -198,7 +198,7 @@ export default function ChallengeDetailPage() {
                   onChange={(e) => setSubmissionText(e.target.value)}
                   rows={8}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="Describe your actions, include photos if possible, and explain the environmental impact..."
+                  placeholder="Describe your solution, include documentation or links if possible, and explain your learning outcomes..."
                 />
                 <p className="text-sm text-gray-500 mt-2">
                   Be detailed! Include what you did, when, and the impact it had.

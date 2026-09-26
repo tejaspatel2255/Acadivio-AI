@@ -20,7 +20,7 @@ router.get('/stats', authMiddleware, roleMiddleware('student'), async (req, res)
         lessons_completed: 0,
         quizzes_completed: 0,
         challenges_completed: 0,
-        eco_impact_score: 0
+        academic_impact_score: 0
       });
     }
     res.json(stats);

@@ -31,7 +31,7 @@ const studentStatsSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  eco_impact_score: {
+  academic_impact_score: {
     type: Number,
     default: 0
   },

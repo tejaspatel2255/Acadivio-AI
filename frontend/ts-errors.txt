@@ -1,4 +1,0 @@
-app/dashboard/admin/institutions/page.tsx(429,18): error TS2367: This comparison appears to be unintentional because the types '"school" | "college" | "ngo"' and '"university"' have no overlap.
-app/dashboard/student/exam-planner/page.tsx(49,76): error TS2339: Property 'semester' does not exist on type 'AuthUser'.
-app/dashboard/student/exam-planner/page.tsx(88,19): error TS2339: Property 'semester' does not exist on type 'AuthUser'.
-app/dashboard/student/exam-planner/page.tsx(89,38): error TS2339: Property 'semester' does not exist on type 'AuthUser'.

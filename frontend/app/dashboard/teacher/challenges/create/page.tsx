@@ -17,7 +17,7 @@ export default function CreateChallenge() {
     instructions: '',
     points_reward: 50,
     difficulty_level: 'beginner',
-    category: 'recycling'
+    category: 'academic'
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,8 +68,8 @@ export default function CreateChallenge() {
                     required
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="e.g., Plastic-Free Week Challenge"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="e.g., Data Structures Assignment Challenge"
                   />
                 </div>
 
@@ -84,7 +84,7 @@ export default function CreateChallenge() {
                     max="500"
                     value={formData.points_reward}
                     onChange={(e) => setFormData({ ...formData, points_reward: parseInt(e.target.value) })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function CreateChallenge() {
                   <select
                     value={formData.difficulty_level}
                     onChange={(e) => setFormData({ ...formData, difficulty_level: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
@@ -112,13 +112,14 @@ export default function CreateChallenge() {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="recycling">♻️ Recycling</option>
-                    <option value="energy">⚡ Energy Conservation</option>
-                    <option value="water">💧 Water Conservation</option>
-                    <option value="transportation">🚲 Sustainable Transportation</option>
-                    <option value="waste">🗑️ Waste Reduction</option>
+                    <option value="academic">🎯 Academic</option>
+                    <option value="quiz">📝 Quiz</option>
+                    <option value="assignment">📋 Assignment</option>
+                    <option value="project">🗂️ Project</option>
+                    <option value="research">🔬 Research</option>
+                    <option value="coding">💻 Coding</option>
                   </select>
                 </div>
               </div>

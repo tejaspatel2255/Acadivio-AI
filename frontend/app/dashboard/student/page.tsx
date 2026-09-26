@@ -116,8 +116,8 @@ export default function StudentDashboard() {
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-sm">Eco Impact Score</p>
-                  <p className="text-3xl font-bold text-green-600">{stats?.eco_impact_score || 0}</p>
+                  <p className="text-gray-600 text-sm">Academic Impact Score</p>
+                  <p className="text-3xl font-bold text-green-600">{stats?.academic_impact_score || 0}</p>
                 </div>
                 <Target className="w-12 h-12 text-green-500" />
               </div>
@@ -278,7 +278,7 @@ export default function StudentDashboard() {
                   <div className="p-2 bg-green-100 rounded-lg mr-3">
                     <Target className="w-5 h-5 text-green-600" />
                   </div>
-                  Eco Challenges
+                  Academic Challenges
                 </h2>
                 <a href="/dashboard/student/challenges" className="text-sm font-semibold text-green-600 hover:text-green-700 bg-green-50 px-3 py-1 rounded-full hover:bg-green-100 transition-colors">
                   View All
@@ -378,8 +378,8 @@ export default function StudentDashboard() {
                 </div>
                 <span className="text-xs font-bold bg-green-50 text-green-600 px-2 py-1 rounded-full">+ Points</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">Eco Challenges</h3>
-              <p className="text-gray-600 text-sm">Complete real-world environmental challenges to earn badges.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors">Academic Challenges</h3>
+              <p className="text-gray-600 text-sm">Complete academic challenges and projects to earn badges.</p>
             </Link>
           </div>
         </div>

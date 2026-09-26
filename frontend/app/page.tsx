@@ -72,20 +72,19 @@ export default function Home() {
               <div className="w-32 h-32 sm:w-40 sm:h-40 bg-white rounded-full flex items-center justify-center overflow-hidden p-1">
                 <img 
                   src="/LOGO.jpeg" 
-                  alt="EcoLearn Logo" 
+                  alt="Acadivio AI Logo" 
                   className="w-full h-full object-cover rounded-full shadow-sm" 
                 />
               </div>
             </motion.div>
 
             <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6 tracking-tight leading-none">
-              Learn to <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-emerald-600">Sustain</span> <br />
-              Grow to <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-600">Protect</span>
+              Acadivio <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">AI</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-              Experience the next evolution of environmental education. <br />
-              Gamified, interactive, and impactful.
+              Intelligent Academic ERP & Adaptive Learning Platform. <br />
+              Personalized, data-driven, and seamless.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">

@@ -431,7 +431,7 @@ router.get('/leaderboard', authMiddleware, roleMiddleware('admin'), async (req, 
         total_points: stat.total_points,
         current_level: stat.current_level,
         lessons_completed: stat.lessons_completed,
-        eco_impact_score: stat.eco_impact_score,
+        academic_impact_score: stat.academic_impact_score,
         badges_earned: stat.badges_earned
       }));
 
@@ -455,7 +455,7 @@ router.post('/users/:id/reset-stats', authMiddleware, roleMiddleware('admin'), a
         lessons_completed: 0,
         quizzes_completed: 0,
         challenges_completed: 0,
-        eco_impact_score: 0,
+        academic_impact_score: 0,
         badges_earned: []
       },
       { upsert: true }

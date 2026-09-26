@@ -106,7 +106,7 @@ export interface Challenge {
   instructions?: string;
   category: string;
   points_reward: number;
-  eco_value?: number;
+  academic_impact_value?: number;
   teacher_id?: string;
   class_id?: string;
   class_number?: string | number;
@@ -127,7 +127,7 @@ export interface StudentStats {
   lessons_completed: number;
   quizzes_completed: number;
   challenges_completed: number;
-  eco_impact_score: number;
+  academic_impact_score: number;
   updated_at?: string;
 }
 

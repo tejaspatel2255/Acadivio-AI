@@ -1,141 +1,97 @@
-# 🌱 EcoLearn: Gamified Environmental Education Platform
+# 🎓 Acadivio AI — Intelligent Academic ERP & Adaptive Learning Platform
 
-EcoLearn is a modern, gamified learning platform designed to engage students in environmental science and sustainability. The project features role-based access control (Student, Teacher, Admin), interactive lessons, quizzes, real-world eco-challenges, badge systems, an AI-powered tutor, and comprehensive analytical dashboards.
+Acadivio AI is an advanced, full-stack Academic ERP & Adaptive Learning Platform designed for modern educational institutions, faculty, and students. The platform integrates role-based administrative workflows (Student, Teacher, Admin), internal marks tracking, target SGPA/academic goal planning, adaptive smart practice powered by Google Gemini AI, interactive lessons, quizzes, achievements, and real-time analytical dashboards.
 
 ---
 
 ## 🚀 Key Features
 
 ### 🧑‍🎓 For Students
-*   **Interactive Lessons & Quizzes:** Learn about key environmental topics and test knowledge to earn points.
-*   **Eco-Challenges:** Complete real-world activities (e.g., waste reduction, energy saving) and submit evidence for teacher approval.
-*   **AI Eco-Tutor:** Get explanations and hints from an AI tutor (powered by Gemini) without leaking quiz answers.
-*   **Gamification:** Earn points, level up, unlock achievement badges, and climb the platform-wide leaderboard.
-*   **Exam Planner:** Manage schedules, upcoming milestones, and quiz deadlines.
+* **Academic Dashboard & Stats:** Track overall progress, completed lessons, quiz scores, and academic achievements.
+* **Exam Planner & SGPA Target Calculator:** Input internal assessment marks, set target SGPA goals, and compute required end-semester exam scores automatically.
+* **AI Academic Assistant:** Get hints, concept breakdowns, and study advice powered by Google Gemini AI without revealing quiz answers.
+* **Smart Practice (Adaptive Learning):** Generate AI-powered practice quizzes tailored dynamically to personal performance and weak topics.
+* **Academic Challenges & Badges:** Participate in academic projects, earn XP points, level up, and view live platform leaderboards.
 
 ### 👩‍🏫 For Teachers
-*   **Classroom Management:** Set up classes, enroll students, and monitor academic progress.
-*   **Content Creation:** Create and manage lessons, custom quizzes (multiple choice, true/false, short answer), and environmental challenges.
-*   **Submission Grading:** Review and grade student challenge submissions with custom rubrics.
-*   **Student Insights:** Track class engagement, average quiz scores, and student participation.
+* **Classroom & Roster Management:** Create classes, enroll students, and manage academic rosters.
+* **Internal Assessment Management:** Enter and update internal assessment marks (Tests, Assignments, Lab marks) for enrolled students.
+* **Content Creation:** Build interactive lessons, custom quizzes (multiple choice, true/false, short answer), and academic challenges.
+* **AI Quiz Generation:** Automatically generate structured quizzes from topics or lesson content using Google Gemini AI.
+* **Submission Grading & Retakes:** Review student challenge submissions and approve or manage retake requests.
 
 ### 🛡️ For Admins
-*   **Platform Dashboard:** Analyze user growth, challenge completion rates, and active institutions.
-*   **User Management:** Manage registered users, modify roles, approve/reject teacher account requests, and reset stats.
-*   **Institution Comparison:** Analyze and compare engagement metrics across different schools, colleges, and NGOs.
+* **Institutional Governance:** Manage registered users, assign subject permissions to teachers, process teacher sign-up approvals, and handle student profile modification requests.
+* **Multi-Institution Analytics:** Monitor user growth, active institutions, and platform-wide performance metrics.
+* **Leaderboard Moderation:** View global top-tier academic rankings and manage user statistics.
 
 ---
 
 ## 📂 Project Structure
 
-EcoLearn is organized as a monorepo containing a frontend Next.js application and a backend Node.js/Express API.
-
 ```
-ecolearn/
-├── frontend/             # Next.js Frontend Application
-│   ├── app/              # Next.js App Router (Pages & Layouts)
-│   ├── components/       # Reusable React UI Components
-│   ├── contexts/         # Authentication & State Contexts
-│   ├── lib/              # API and Socket helper clients
-│   └── public/           # Static assets, logos, and icons
-├── backend/              # Node.js Express Backend API
-│   ├── config/           # Database configurations (MongoDB)
-│   ├── controllers/      # Route controllers (AI, Quizzes, Auth, etc.)
-│   ├── middleware/       # Express middlewares (Auth, Role check)
-│   ├── models/           # Mongoose Database Models
-│   ├── routes/           # REST API routes
-│   └── utils/            # Helper utilities (Port detection, AI helper)
-└── database/             # Relational schema reference
-    └── schema.sql        # Database schema references (PostgreSQL/Supabase fallback)
+Acadivio-AI/
+├── frontend/             # Next.js App Router Frontend Application
+│   ├── app/              # App Router Pages, Layouts, and Dashboard Subroutes
+│   ├── components/       # UI Components (AiTutor, LiveLeaderboard, Navbar, etc.)
+│   ├── contexts/         # Authentication & Global React Contexts
+│   ├── lib/              # API Client, Socket.IO Instance, Types & Utilities
+│   └── public/           # Static Brand Assets & Logos
+├── backend/              # Node.js + Express REST API & Socket.IO Server
+│   ├── config/           # Single-Instance MongoDB Database Connection
+│   ├── controllers/      # Express Route Controllers (AI Controller, etc.)
+│   ├── middleware/       # Auth (JWT), RBAC Roles, and Subject Access Controls
+│   ├── models/           # 23 Mongoose Database Schemas
+│   ├── routes/           # REST API Routes (/api/auth, /api/exam-planner, etc.)
+│   ├── scripts/          # Maintenance Scripts
+│   ├── tests/            # Test and Diagnostic Utilities
+│   └── utils/            # Gemini AI Service Wrapper & Network Utilities
 ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-*   **Frontend:** Next.js (App Router), React 19, TypeScript, TailwindCSS v4, Framer Motion (for animations), Lucide React (icons), Recharts (data visualization), Socket.io Client.
-*   **Backend:** Node.js, Express, MongoDB (Mongoose), Socket.io, Axios, Nodemailer, JSON Web Tokens (JWT).
-*   **AI Integration:** Google Gemini API (via `@google/generative-ai` / model fallbacks like `gemini-2.5-flash` or `gemini-1.5-flash`).
+* **Frontend:** Next.js 16 (App Router), React 19, TypeScript 5, Tailwind CSS 4, Framer Motion, Lucide Icons, Recharts, Socket.IO Client.
+* **Backend:** Node.js, Express.js, MongoDB (Mongoose 9), WebSockets (Socket.IO), Nodemailer, JSON Web Tokens (JWT).
+* **AI Integration:** Google Gemini API (`@google/generative-ai` v0.24) with multi-model fallback support (`gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-1.5-flash`).
 
 ---
 
-## ⚙️ Local Configuration & Environment Setup
+## ⚙️ Environment Setup
 
-Before launching the project, copy the environment templates in both frontend and backend directories and add your credentials.
-
-### 1. Backend Configuration
-Navigate to the `backend/` directory, create a `.env` file (copied from `.env.example`), and configure:
+### 1. Backend Environment (`backend/.env`)
 ```ini
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/acadivio?appName=Cluster0
 PORT=3001
-MONGODB_URI=mongodb://localhost:27017/ecolearn
+FRONTEND_URL=http://localhost:3000
+JWT_SECRET=your_secure_jwt_secret
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
 GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
-### 2. Frontend Configuration
-Navigate to the `frontend/` directory, create a `.env.local` file (copied from `.env.example`), and configure:
+### 2. Frontend Environment (`frontend/.env.local`)
 ```ini
 NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-*Note: Environment setup helper scripts (`setup-env.ps1`, `create-env.ps1`, and `fix-now.ps1`) are available in the root folder to automate generating `.env.local` templates.*
-
 ---
 
-## 🏃 Running the Application Locally
+## 🏃 Running Locally
 
-You will need to run the backend API and frontend Next.js application in separate terminals.
+### Step 1: Start Backend Server
+```bash
+cd backend
+npm install
+npm start
+```
+*Backend API starts on port 3001 with single-instance MongoDB connection pool and WebSockets.*
 
-### Step 1: Start the Backend API
-1. Open a terminal and navigate to the backend:
-   ```bash
-   cd backend
-   ```
-2. Install the dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-   *The backend will automatically search for an available port starting at `3001` (e.g. `3001` or `3002` if `3001` is busy) and start a Socket.io server.*
-
-### Step 2: Start the Frontend App
-1. Open a second terminal and navigate to the frontend:
-   ```bash
-   cd frontend
-   ```
-2. Install the dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
-
----
-
-## 📦 Preparing for Deployment & Git Checklist
-
-To push this project securely to GitHub:
-
-1.  **Do not commit secret keys:** Verify that `.env` or `.env.local` files are NOT tracked by Git. Run:
-    ```bash
-    git status
-    ```
-    If any `.env` files appear in the unstaged/staged list, remove them from tracking before committing:
-    ```bash
-    git rm --cached backend/.env
-    git rm --cached frontend/.env.local
-    ```
-2.  **Verify Git Ignore Rules:** The root `.gitignore` is configured to ignore `node_modules/`, Next.js build directories (`.next/`, `build/`, `dist/`), OS files, log outputs, and all `.env` files automatically at all folder levels.
-3.  **Perform Git commit & push:**
-    ```bash
-    git add .
-    git commit -m "Configure README, .gitignore, and .env templates for deployment"
-    git push origin main
-    ```
+### Step 2: Start Frontend Application
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Access frontend UI at [http://localhost:3000](http://localhost:3000).*

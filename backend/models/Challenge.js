@@ -26,7 +26,7 @@ const challengeSchema = new mongoose.Schema({
     type: Number,
     default: 10
   },
-  eco_value: {
+  academic_impact_value: {
     type: Number,
     default: 5
   },

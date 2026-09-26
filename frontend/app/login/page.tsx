@@ -101,8 +101,8 @@ function LoginPageContent() {
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-3 mb-2">
-            <img src="/LOGO.jpeg" alt="EcoLearn Logo" className="w-10 h-10 object-contain rounded-lg shadow-sm" />
-            <h1 className="text-3xl font-bold text-gray-900">EcoLearn</h1>
+            <img src="/LOGO.jpeg" alt="Acadivio AI Logo" className="w-10 h-10 object-contain rounded-lg shadow-sm" />
+            <h1 className="text-3xl font-bold text-gray-900">Acadivio AI</h1>
           </div>
           <p className="text-gray-600">Welcome back! Please login to continue</p>
         </div>

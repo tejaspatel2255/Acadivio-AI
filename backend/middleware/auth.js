@@ -10,7 +10,12 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-in-production');
+    if (!process.env.JWT_SECRET) {
+      console.error('[AuthMiddleware] FATAL: JWT_SECRET environment variable is missing.');
+      return res.status(500).json({ error: 'Server authentication misconfiguration' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId).select('-password');
 
     if (!user) {

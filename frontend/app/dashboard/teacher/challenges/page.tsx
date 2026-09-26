@@ -21,9 +21,9 @@ function TeacherChallengesContent() {
     description: '',
     instructions: '',
     points_reward: 50,
-    eco_value: 5,
+    academic_impact_value: 5,
     difficulty_level: 'beginner',
-    category: 'recycling'
+    category: 'academic'
   });
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -69,7 +69,7 @@ function TeacherChallengesContent() {
       description: challenge.description,
       instructions: challenge.instructions || '', // Handle potential missing field
       points_reward: challenge.points_reward,
-      eco_value: challenge.eco_value || 5,
+      academic_impact_value: (challenge as any).academic_impact_value || 5,
       difficulty_level: challenge.difficulty_level || 'beginner',
       category: challenge.category
     });
@@ -86,9 +86,9 @@ function TeacherChallengesContent() {
       description: '',
       instructions: '',
       points_reward: 50,
-      eco_value: 5,
+      academic_impact_value: 5,
       difficulty_level: 'beginner',
-      category: 'recycling'
+      category: 'academic'
     });
   };
 
@@ -100,7 +100,7 @@ function TeacherChallengesContent() {
         ...formData,
         teacher_id: user!.id,
         points_reward: parseInt(formData.points_reward.toString()),
-        eco_value: parseInt(formData.eco_value.toString())
+        academic_impact_value: parseInt(formData.academic_impact_value.toString())
       };
 
       if (editingId) {
@@ -222,12 +222,12 @@ function TeacherChallengesContent() {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'recycling': return '♻️';
-      case 'energy': return '⚡';
-      case 'water': return '💧';
-      case 'transportation': return '🚲';
-      case 'waste': return '🗑️';
-      default: return '🌱';
+      case 'quiz': return '📝';
+      case 'assignment': return '📋';
+      case 'project': return '🗂️';
+      case 'research': return '🔬';
+      case 'coding': return '💻';
+      default: return '🎯';
     }
   };
 
@@ -249,7 +249,7 @@ function TeacherChallengesContent() {
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-gray-900 flex items-center">
               <Target className="w-8 h-8 mr-3" />
-              Eco Challenges
+              Academic Challenges
             </h1>
             {!showCreateForm && (
               <button
@@ -260,9 +260,9 @@ function TeacherChallengesContent() {
                     description: '',
                     instructions: '',
                     points_reward: 50,
-                    eco_value: 5,
+                    academic_impact_value: 5,
                     difficulty_level: 'beginner',
-                    category: 'recycling'
+                    category: 'academic'
                   });
                   setShowCreateForm(true);
                 }}
@@ -290,7 +290,7 @@ function TeacherChallengesContent() {
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                      placeholder="e.g., Plastic-Free Week Challenge"
+                      placeholder="e.g., Data Structures Assignment Challenge"
                     />
                   </div>
                   <div>
@@ -309,15 +309,15 @@ function TeacherChallengesContent() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Eco Value (Impact Score)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Academic Impact Value</label>
                     <input
                       type="number"
                       required
                       min="1"
                       max="100"
-                      value={formData.eco_value}
-                      onChange={(e) => setFormData({ ...formData, eco_value: parseInt(e.target.value || '0') })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      value={formData.academic_impact_value}
+                      onChange={(e) => setFormData({ ...formData, academic_impact_value: parseInt(e.target.value || '0') })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   <div>
@@ -337,13 +337,14 @@ function TeacherChallengesContent() {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="recycling">Recycling</option>
-                      <option value="energy">Energy Conservation</option>
-                      <option value="water">Water Conservation</option>
-                      <option value="transportation">Sustainable Transportation</option>
-                      <option value="waste">Waste Reduction</option>
+                      <option value="academic">Academic</option>
+                      <option value="quiz">Quiz</option>
+                      <option value="assignment">Assignment</option>
+                      <option value="project">Project</option>
+                      <option value="research">Research</option>
+                      <option value="coding">Coding</option>
                     </select>
                   </div>
                 </div>
@@ -422,8 +423,8 @@ function TeacherChallengesContent() {
                         <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
                           +{challenge.points_reward} pts
                         </span>
-                        <span className="inline-block bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full">
-                          🌱 Eco: {challenge.eco_value || 5}
+                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                          🎯 Impact: {(challenge as any).academic_impact_value || 5}
                         </span>
                         {challenge.class_number && (
                           <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">
@@ -483,7 +484,7 @@ function TeacherChallengesContent() {
             <div className="text-center py-12">
               <Target className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No challenges yet</h3>
-              <p className="text-gray-500 mb-4">Create eco-friendly challenges to engage your students.</p>
+              <p className="text-gray-500 mb-4">Create academic challenges to engage your students.</p>
               <button
                 onClick={() => setShowCreateForm(true)}
                 className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700"

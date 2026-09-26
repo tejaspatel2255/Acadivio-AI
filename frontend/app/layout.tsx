@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EcoLearn - Gamified Environmental Education Platform",
-  description: "Interactive environmental education platform for schools and colleges",
+  title: "Acadivio AI — Intelligent Academic ERP & Adaptive Learning Platform",
+  description: "Intelligent Academic ERP & Adaptive Learning Platform for institutions, faculty, and students",
 };
 
 export default function RootLayout({

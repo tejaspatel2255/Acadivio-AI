@@ -1,7 +1,7 @@
 {
-  "name": "ecolearn-backend",
+  "name": "acadivio-ai-backend",
   "version": "1.0.0",
-  "description": "Backend API for Gamified Environmental Education Platform",
+  "description": "Backend API for Acadivio AI — Intelligent Academic ERP & Adaptive Learning Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

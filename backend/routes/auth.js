@@ -21,7 +21,10 @@ const transporter = nodemailer.createTransport({
 
 // Generate JWT token
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET || 'your-secret-key-change-in-production', {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is missing.');
+  }
+  return jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: '30d'
   });
 };
@@ -52,21 +55,21 @@ router.post('/send-otp', async (req, res) => {
 
     // Send email
     const mailOptions = {
-      from: `EcoLearn <${process.env.EMAIL_USER}>`,
+      from: `Acadivio AI <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'EcoLearn - Email Verification OTP',
+      subject: 'Acadivio AI - Email Verification OTP',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #10B981; margin: 0;">🌱 EcoLearn</h1>
+            <h1 style="color: #2563EB; margin: 0;">🎓 Acadivio AI</h1>
             <h2 style="color: #374151; margin: 10px 0;">Email Verification</h2>
           </div>
           
           <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0 0 15px 0; color: #374151;">Hello,</p>
-            <p style="margin: 0 0 15px 0; color: #374151;">Thank you for registering with EcoLearn! Please use the following OTP to verify your email address:</p>
+            <p style="margin: 0 0 15px 0; color: #374151;">Thank you for registering with Acadivio AI! Please use the following OTP to verify your email address:</p>
             
-            <div style="background-color: #10B981; color: white; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
+            <div style="background-color: #2563EB; color: white; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
               <h1 style="margin: 0; font-size: 36px; letter-spacing: 8px; font-weight: bold;">${otp}</h1>
             </div>
             
@@ -75,7 +78,7 @@ router.post('/send-otp', async (req, res) => {
           </div>
           
           <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-            <p style="margin: 0; color: #6B7280; font-size: 14px;">Best regards,<br>The EcoLearn Team</p>
+            <p style="margin: 0; color: #6B7280; font-size: 14px;">Best regards,<br>The Acadivio AI Team</p>
           </div>
         </div>
       `
@@ -372,13 +375,13 @@ router.post('/forgot-password', async (req, res) => {
 
     // Send email
     const mailOptions = {
-      from: `EcoLearn <${process.env.EMAIL_USER}>`,
+      from: `Acadivio AI <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: 'EcoLearn - Password Reset OTP',
+      subject: 'Acadivio AI - Password Reset OTP',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #10B981; margin: 0;">🌱 EcoLearn</h1>
+            <h1 style="color: #2563EB; margin: 0;">🎓 Acadivio AI</h1>
             <h2 style="color: #374151; margin: 10px 0;">Password Reset</h2>
           </div>
           
@@ -386,7 +389,7 @@ router.post('/forgot-password', async (req, res) => {
             <p style="margin: 0 0 15px 0; color: #374151;">Hello,</p>
             <p style="margin: 0 0 15px 0; color: #374151;">You requested to reset your password. Please use the following OTP to proceed:</p>
             
-            <div style="background-color: #10B981; color: white; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
+            <div style="background-color: #2563EB; color: white; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
               <h1 style="margin: 0; font-size: 36px; letter-spacing: 8px; font-weight: bold;">${otp}</h1>
             </div>
             
@@ -395,7 +398,7 @@ router.post('/forgot-password', async (req, res) => {
           </div>
           
           <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-            <p style="margin: 0; color: #6B7280; font-size: 14px;">Best regards,<br>The EcoLearn Team</p>
+            <p style="margin: 0; color: #6B7280; font-size: 14px;">Best regards,<br>The Acadivio AI Team</p>
           </div>
         </div>
       `

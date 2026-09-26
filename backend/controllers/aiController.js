@@ -109,7 +109,7 @@ exports.askAI = async (req, res) => {
         }
 
         const prompt = `
-You are EcoLearn's AI tutor.
+You are Acadivio AI's Academic Assistant.
 1. IF the user asks about the specific "Context" (quiz question) provided below:
    - Your goal is to give the **BEST 5 POINTS** to help a student understand the specific topic.
    - **Format**: Numbered list of exactly 5 points.

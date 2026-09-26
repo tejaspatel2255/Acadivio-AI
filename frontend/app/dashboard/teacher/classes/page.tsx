@@ -118,7 +118,7 @@ export default function TeacherClasses() {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g., Environmental Science 101"
+                    placeholder="e.g., Data Structures 101"
                   />
                 </div>
                 <div>
@@ -129,7 +129,7 @@ export default function TeacherClasses() {
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g., Environmental Science"
+                    placeholder="e.g., Computer Science"
                   />
                 </div>
                 <div className="md:col-span-2">

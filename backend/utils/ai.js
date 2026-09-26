@@ -80,11 +80,11 @@ const generateQuiz = async (contextData) => {
         console.log("Calculated Question Distribution:\n" + subjectDistributionString);
     }
 
-    const prompt = `
-You are EcoLearn's Adaptive Academic Quiz Engine.
+const prompt = `
+You are Acadivio AI's Adaptive Academic Quiz Engine.
 
 This AI process is AUTOMATICALLY triggered whenever a student clicks the
-"Smart Practice" module in the EcoLearn dashboard.
+"Smart Practice" module in the Acadivio AI dashboard.
 
 The student does NOT type or provide any prompt.
 The Smart Practice click acts as the trigger to:

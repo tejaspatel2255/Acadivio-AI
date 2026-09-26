@@ -318,11 +318,11 @@ router.post('/submission/:id/grade', authMiddleware, roleMiddleware('teacher'), 
 
         stats.current_level = Math.max(1, Math.floor(Math.sqrt(stats.total_points / 100)) + 1);
 
-        // Update Eco Impact Score
-        // Get the challenge correctly to find its eco_value
+        // Update Academic Impact Score
+        // Get the challenge correctly to find its academic_impact_value
         const challenge = await Challenge.findById(submission.challenge_id);
         if (challenge) {
-          stats.eco_impact_score = (stats.eco_impact_score || 0) + (challenge.eco_value || 5);
+          stats.academic_impact_score = (stats.academic_impact_score || 0) + (challenge.academic_impact_value || 5);
         }
 
         await stats.save();

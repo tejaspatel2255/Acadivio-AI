@@ -102,7 +102,7 @@ export default function LeaderboardPage() {
                       <th className="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Student</th>
                       <th className="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Level</th>
                       <th className="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Total Points</th>
-                      <th className="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Eco Impact</th>
+                      <th className="px-6 py-5 text-left text-sm font-bold uppercase tracking-wider">Academic Impact</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -147,7 +147,7 @@ export default function LeaderboardPage() {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center text-emerald-700 font-medium">
-                              {entry.eco_impact_score || 0}
+                              {entry.academic_impact_score || 0}
                             </div>
                           </td>
                         </tr>

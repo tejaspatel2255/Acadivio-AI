@@ -58,7 +58,7 @@ export default function ChallengesPage() {
         <Navbar />
         <div className="container mx-auto px-4 pt-24 pb-8">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Eco Challenges</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Academic Challenges</h1>
             <Link
               href="/dashboard/student"
               className="text-green-600 hover:text-green-700 font-medium"

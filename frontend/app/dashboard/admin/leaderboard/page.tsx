@@ -245,8 +245,8 @@ export default function GlobalLeaderboard() {
                         </div>
 
                         <div className="text-center">
-                          <div className="text-lg font-medium text-orange-600">{user.eco_impact_score || 0}</div>
-                          <div className="text-xs text-gray-500">Eco Impact</div>
+                          <div className="text-lg font-medium text-orange-600">{user.academic_impact_score || 0}</div>
+                          <div className="text-xs text-gray-500">Academic Impact</div>
                         </div>
 
                         <div className="flex flex-col space-y-2">

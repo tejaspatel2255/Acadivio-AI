@@ -78,8 +78,7 @@ Thumbs.db
 **/.DS_Store
 **/Thumbs.db
 
-# Supabase
+# Local config / legacy files
 .supabase/
 **/.supabase/
-
-
+*.local.config

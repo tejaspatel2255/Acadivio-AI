@@ -10,7 +10,7 @@ const StudentStats = require('./backend/models/StudentStats');
 async function cleanupDuplicates() {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ecolearn');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/acadivio');
     console.log('Connected to MongoDB');
 
     // Find duplicates

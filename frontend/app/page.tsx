@@ -123,11 +123,11 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold text-slate-800 mb-3">For Students</h3>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Embark on an interactive journey. Earn eco-points, unlock badges, and compete with friends while learning about our planet.
+                Track your academic performance, attempt AI-adaptive quizzes, earn achievement badges, and compete on the leaderboard while mastering your subjects.
               </p>
               <ul className="space-y-3 text-slate-500 font-medium">
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /> Interactive Quizzes</li>
-                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /> Real-world Challenges</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /> Adaptive Smart Practice</li>
+                <li className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /> Academic Challenges</li>
               </ul>
             </Card>
 
@@ -137,7 +137,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold text-slate-800 mb-3">For Teachers</h3>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Empower your classroom with powerful tools. create custom lessons, track progress, and inspire the next generation of eco-warriors.
+                Empower your classroom with powerful tools. Create custom lessons, manage internal marks, generate AI quizzes, and track student academic progress.
               </p>
               <ul className="space-y-3 text-slate-500 font-medium">
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-blue-500 mr-3" /> Content Management</li>
@@ -149,9 +149,9 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
                 <Trophy className="w-8 h-8 text-amber-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-3">Gamification</h3>
+              <h3 className="text-2xl font-bold text-slate-800 mb-3">Academic Achievements</h3>
               <p className="text-slate-600 leading-relaxed mb-6">
-                Learning shouldn&apos;t be boring. We use game mechanisms to drive engagement, retention, and real-world action.
+                Learning is rewarding. Earn XP points for completing lessons and quizzes, unlock milestone badges, and rise through academic leaderboards.
               </p>
               <ul className="space-y-3 text-slate-500 font-medium">
                 <li className="flex items-center"><CheckCircle className="w-5 h-5 text-amber-500 mr-3" /> Leaderboards</li>

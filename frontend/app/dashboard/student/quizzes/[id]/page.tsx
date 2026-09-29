@@ -376,8 +376,15 @@ export default function TakeQuizPage() {
                   </div>
 
                   <div className="mt-8 space-y-4">
-                    {currentQ.question_type === 'multiple_choice' && currentQ.options && (
-                      Object.entries(currentQ.options).map(([key, value]) => (
+                    {currentQ.options && (() => {
+                      let normalizedOpts: [string, string][] = [];
+                      if (Array.isArray(currentQ.options)) {
+                        normalizedOpts = (currentQ.options as any[]).map((opt, idx) => [String.fromCharCode(65 + idx), String(opt)]);
+                      } else if (typeof currentQ.options === 'object') {
+                        normalizedOpts = Object.entries(currentQ.options).map(([k, v]) => [k, String(v)]);
+                      }
+
+                      return normalizedOpts.map(([key, value]) => (
                         <label
                           key={key}
                           className={`group relative flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all duration-300 ease-out ${answers[currentQ._id || currentQ.id] === key
@@ -404,7 +411,7 @@ export default function TakeQuizPage() {
 
                           <span className={`text-lg font-medium transition-colors ${answers[currentQ._id || currentQ.id] === key ? 'text-indigo-900' : 'text-slate-700'
                             }`}>
-                            {value as string}
+                            {value}
                           </span>
 
                           {/* Checkmark Indicator */}
@@ -418,8 +425,8 @@ export default function TakeQuizPage() {
                             </div>
                           )}
                         </label>
-                      ))
-                    )}
+                      ));
+                    })()}
 
                     {currentQ.question_type === 'true_false' && (
                       ['True', 'False'].map((option) => (

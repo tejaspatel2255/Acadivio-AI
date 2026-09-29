@@ -19,24 +19,33 @@ export default function StudentDashboard() {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [activeSemester, setActiveSemester] = useState<number>(user?.semester || 1);
+
+  useEffect(() => {
+    if (user?.semester) {
+      setActiveSemester(user.semester);
+    }
+  }, [user]);
+
   useEffect(() => {
     if (user) {
       loadDashboardData();
     }
-  }, [user]);
+  }, [user, activeSemester]);
 
   const loadDashboardData = async () => {
+    setLoading(true);
     try {
       // Load student stats
       const statsData = await getStudentStats();
       if (statsData) setStats(statsData);
 
-      // Load lessons (API will filter by enrolled classes)
-      const lessonsData = await getLessons();
+      // Load lessons (filter by classNumber/semester)
+      const lessonsData = await getLessons(activeSemester ? String(activeSemester) : undefined);
       if (lessonsData) setLessons(lessonsData.slice(0, 5));
 
       // Load quizzes
-      const quizzesData = await getQuizzes();
+      const quizzesData = await getQuizzes(activeSemester ? String(activeSemester) : undefined);
       if (quizzesData) {
         // Filter out Smart Practice quizzes from general dashboard
         const generalQuizzes = quizzesData.filter((q: Quiz) => !q.title.startsWith('Smart Practice'));
@@ -49,11 +58,13 @@ export default function StudentDashboard() {
 
         if (smartPracticeQuizzes.length > 0) {
           setLatestSmartPractice(smartPracticeQuizzes[0]);
+        } else {
+          setLatestSmartPractice(null);
         }
       }
 
       // Load challenges
-      const challengesData = await getChallenges();
+      const challengesData = await getChallenges(activeSemester ? String(activeSemester) : undefined);
       if (challengesData) setChallenges(challengesData.slice(0, 5));
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -88,16 +99,18 @@ export default function StudentDashboard() {
             </div>
             
             <div className="flex items-center bg-blue-50 border border-blue-200 px-4 py-2 rounded-xl shadow-sm">
-              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider mr-2">Active Semester:</span>
-              <span className="text-sm font-bold text-blue-900 bg-white px-3 py-1 rounded-lg border border-blue-100">
-                {user?.standard ? `Standard ${user.standard}` : `Semester ${user?.semester || 1}`}
-              </span>
-              <Link
-                href="/dashboard/profile"
-                className="ml-3 text-xs text-blue-600 hover:text-blue-800 underline font-medium"
+              <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider mr-2">Semester:</span>
+              <select
+                value={activeSemester}
+                onChange={(e) => setActiveSemester(Number(e.target.value))}
+                className="text-sm font-bold text-blue-900 bg-white px-3 py-1 rounded-lg border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               >
-                Change
-              </Link>
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                  <option key={`sem-${sem}`} value={sem}>
+                    Semester {sem}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

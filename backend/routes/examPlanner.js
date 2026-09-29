@@ -55,15 +55,42 @@ router.post('/internal-marks', authMiddleware, roleMiddleware('teacher', 'admin'
     try {
         const { student_id, subject_name, internal_marks_obtained, total_internal_marks, semester, exam_type, remarks, focus_areas } = req.body;
 
-        // Strict Validation
+        // Strict Field Validation
         if (!student_id || !subject_name || !semester || !exam_type || !focus_areas) {
             return res.status(400).json({ error: 'Missing required fields (student_id, subject, semester, type, focus_areas)' });
+        }
+
+        const obtained = Number(internal_marks_obtained);
+        const maxMarks = Number(total_internal_marks);
+
+        // Strict Numeric Bounds Validation
+        if (isNaN(obtained) || isNaN(maxMarks)) {
+            return res.status(400).json({ error: 'Marks must be valid numbers' });
+        }
+
+        if (obtained < 0) {
+            return res.status(400).json({ error: 'Obtained marks cannot be negative' });
+        }
+
+        if (maxMarks <= 0) {
+            return res.status(400).json({ error: 'Total maximum marks must be greater than zero' });
+        }
+
+        if (obtained > maxMarks) {
+            return res.status(400).json({ error: `Obtained marks (${obtained}) cannot exceed total maximum marks (${maxMarks})` });
         }
 
         // Validate if student exists
         const student = await User.findById(student_id);
         if (!student || student.role !== 'student') {
             return res.status(404).json({ error: 'Student not found or invalid role' });
+        }
+
+        // Verify student belongs to teacher's institution (if teacher role)
+        if (req.user.role === 'teacher' && req.user.institution_id) {
+            if (!student.institution_id || student.institution_id.toString() !== req.user.institution_id.toString()) {
+                return res.status(403).json({ error: 'Unauthorized: Student does not belong to your institution' });
+            }
         }
 
         let assessment = await InternalAssessment.findOne({

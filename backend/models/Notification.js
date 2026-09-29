@@ -27,6 +27,10 @@ const notificationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { timestamps: { createdAt: 'created_at' } });
+
+// Index for user notification lookup and unread filter
+notificationSchema.index({ user_id: 1, is_read: 1 });
+notificationSchema.index({ user_id: 1, created_at: -1 });
 
 module.exports = mongoose.model('Notification', notificationSchema);

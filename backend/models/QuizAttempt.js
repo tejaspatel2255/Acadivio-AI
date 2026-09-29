@@ -40,7 +40,12 @@ const quizAttemptSchema = new mongoose.Schema({
     enum: ['in_progress', 'completed', 'abandoned'],
     default: 'in_progress'
   }
-});
+}, { timestamps: { createdAt: 'started_at', updatedAt: 'completed_at' } });
+
+// Indexes for fast lookup
+quizAttemptSchema.index({ quiz_id: 1, student_id: 1 });
+quizAttemptSchema.index({ student_id: 1 });
+quizAttemptSchema.index({ student_id: 1, status: 1 });
 
 module.exports = mongoose.model('QuizAttempt', quizAttemptSchema);
 

@@ -707,16 +707,52 @@ router.post('/smart-practice', authMiddleware, roleMiddleware('student'), async 
       }
     }
 
-    // Calculate subject-wise accuracy percentages
+    // Calculate subject-wise accuracy percentages, repeated mistakes, and unanswered counts
     const subjectAccuracyPercentages = {};
+    const repeatedMistakes = {};
+    let totalUnanswered = 0;
+    let totalQuestionsAttempted = 0;
+    let totalCorrect = 0;
+
     Object.keys(subjectAccuracy).forEach(subject => {
       const { correct, total } = subjectAccuracy[subject];
       if (total > 0) {
         subjectAccuracyPercentages[subject] = Math.round((correct / total) * 100);
+        totalQuestionsAttempted += total;
+        totalCorrect += correct;
       } else {
         subjectAccuracyPercentages[subject] = null; // No data
       }
     });
+
+    // Count repeated weak focus areas
+    Object.keys(weakFocusAreas).forEach(subject => {
+      repeatedMistakes[subject] = weakFocusAreas[subject];
+    });
+
+    // Calculate aggregate performance score across past attempts and internal assessments
+    const overallQuizAvg = totalQuestionsAttempted > 0 ? (totalCorrect / totalQuestionsAttempted) * 100 : null;
+    
+    // Internal marks average
+    const totalInternalMarks = examPlannerData.reduce((sum, e) => sum + (e.marks || 0), 0);
+    const totalMaxInternal = examPlannerData.reduce((sum, e) => sum + (e.totalMarks || 100), 0);
+    const internalMarksAvg = totalMaxInternal > 0 ? (totalInternalMarks / totalMaxInternal) * 100 : 50;
+
+    // Combined performance benchmark: 60% Quiz history + 40% Internal Marks (or 100% internal if no quizzes)
+    const compositeScore = overallQuizAvg !== null 
+      ? Math.round(overallQuizAvg * 0.6 + internalMarksAvg * 0.4) 
+      : Math.round(internalMarksAvg);
+
+    // Explicit difficulty tier based on the rules:
+    // BEGINNER: < 60%
+    // INTERMEDIATE: 60% - 85%
+    // EXPERT: > 85%
+    let calculatedDifficultyTier = 'intermediate';
+    if (compositeScore < 60) {
+      calculatedDifficultyTier = 'beginner';
+    } else if (compositeScore > 85) {
+      calculatedDifficultyTier = 'expert';
+    }
 
     // Determine overall performance trend
     let overallPerformance = 'average';
@@ -734,29 +770,21 @@ router.post('/smart-practice', authMiddleware, roleMiddleware('student'), async 
         overallPerformance = 'stagnant';
       }
     } else if (attempts.length === 1) {
-      // Single attempt - can't determine trend, default to average
       overallPerformance = 'average';
     } else {
-      // No attempts - default to average
-      overallPerformance = 'average';
+      overallPerformance = 'no_history';
     }
 
-    // Check for high performance in the most recent attempt
-    let highPerformanceMode = false;
-    if (attempts.length > 0) {
-      const lastAttempt = attempts[0];
-      // Check if it was a completed attempt and score > 75%
-      if (lastAttempt.status === 'completed' && lastAttempt.percentage > 75) {
-        highPerformanceMode = true;
-      }
-    }
-
-    // Format previousQuizRemarks to match expected structure
+    // Format previousQuizRemarks with detailed multi-dimensional analytics
     const previousQuizRemarks = {
-      overallPerformance: overallPerformance,
+      overallPerformance,
+      compositeScore,
+      difficultyTier: calculatedDifficultyTier,
       subjectAccuracy: subjectAccuracyPercentages,
-      weakFocusAreas: weakFocusAreas,
-      highPerformanceMode: highPerformanceMode // Add flag here
+      weakFocusAreas,
+      repeatedMistakes,
+      attemptsCount: attempts.length,
+      highPerformanceMode: calculatedDifficultyTier === 'expert' || (attempts.length > 0 && (attempts[0].percentage || 0) > 85)
     };
 
     const contextData = {
@@ -792,42 +820,72 @@ router.post('/smart-practice', authMiddleware, roleMiddleware('student'), async 
       throw new Error(`Quiz must contain exactly 25 questions, but received ${aiResult.quiz.length}`);
     }
 
-    // Validate each question has required fields
-    aiResult.quiz.forEach((q, idx) => {
-      if (!q.question || typeof q.question !== 'string') {
-        throw new Error(`Question ${idx + 1} is missing or invalid question text`);
+    // Comprehensive Question Validation & Sanitization Layer
+    const seenQuestions = new Set();
+    const validatedQuiz = [];
+
+    for (let idx = 0; idx < aiResult.quiz.length; idx++) {
+      const q = aiResult.quiz[idx];
+
+      if (!q.question || typeof q.question !== 'string' || q.question.trim().length < 5) {
+        throw new Error(`Question ${idx + 1} is missing or has invalid question text`);
       }
+
+      const normalizedQText = q.question.trim().toLowerCase();
+      if (seenQuestions.has(normalizedQText)) {
+        console.warn(`Duplicate question detected at index ${idx + 1}, skipping duplicate`);
+        continue;
+      }
+      seenQuestions.add(normalizedQText);
+
       if (!q.options || !Array.isArray(q.options) || q.options.length !== 4) {
         throw new Error(`Question ${idx + 1} must have exactly 4 options as an array`);
       }
+
+      // Ensure all 4 options are distinct strings
+      const trimmedOptions = q.options.map(opt => String(opt || '').trim());
+      const uniqueOptions = new Set(trimmedOptions.map(o => o.toLowerCase()));
+      if (uniqueOptions.size !== 4) {
+        throw new Error(`Question ${idx + 1} contains duplicate options`);
+      }
+
       if (!q.correctAnswer || typeof q.correctAnswer !== 'string') {
         throw new Error(`Question ${idx + 1} is missing or invalid correctAnswer`);
       }
+
       if (!q.subject || typeof q.subject !== 'string') {
         throw new Error(`Question ${idx + 1} is missing or invalid subject`);
       }
-      // Validate subject matches exam planner (case-insensitive comparison)
-      const subjectExists = examPlannerData.some(e =>
-        e.subject.toLowerCase() === q.subject.toLowerCase()
-      );
-      if (!subjectExists) {
-        throw new Error(`Question ${idx + 1} has subject "${q.subject}" which is not in Exam Planner. Available subjects: ${examPlannerData.map(e => e.subject).join(', ')}`);
-      }
 
-      // Use exact subject name from exam planner to ensure consistency
+      // Validate subject matches exam planner (case-insensitive comparison)
       const matchingSubject = examPlannerData.find(e =>
         e.subject.toLowerCase() === q.subject.toLowerCase()
       );
-      if (matchingSubject) {
-        q.subject = matchingSubject.subject; // Use exact case from exam planner
+      if (!matchingSubject) {
+        throw new Error(`Question ${idx + 1} has subject "${q.subject}" which is not in Exam Planner. Available subjects: ${examPlannerData.map(e => e.subject).join(', ')}`);
       }
+      q.subject = matchingSubject.subject; // Use exact case from exam planner
+
+      // Ensure explanation exists
+      if (!q.explanation || typeof q.explanation !== 'string' || q.explanation.trim().length === 0) {
+        q.explanation = `Correct answer is ${q.correctAnswer} based on ${q.subject} principles.`;
+      }
+
       // Validate difficulty
-      if (q.difficulty && !['easy', 'medium', 'hard'].includes(q.difficulty)) {
-        q.difficulty = 'medium'; // Default to medium if invalid
+      if (q.difficulty && !['easy', 'medium', 'hard'].includes(q.difficulty.toLowerCase())) {
+        q.difficulty = calculatedDifficultyTier === 'expert' ? 'hard' : calculatedDifficultyTier === 'beginner' ? 'easy' : 'medium';
       } else if (!q.difficulty) {
-        q.difficulty = 'medium'; // Default if missing
+        q.difficulty = calculatedDifficultyTier === 'expert' ? 'hard' : calculatedDifficultyTier === 'beginner' ? 'easy' : 'medium';
       }
-    });
+
+      validatedQuiz.push(q);
+    }
+
+    if (validatedQuiz.length < 20) {
+      throw new Error(`Quiz validation failed: only ${validatedQuiz.length} valid unique questions generated`);
+    }
+
+    aiResult.quiz = validatedQuiz;
 
     // 4. Save Generated Quiz to DB
     const quizTitle = `Smart Practice - ${new Date().toLocaleDateString()}`;

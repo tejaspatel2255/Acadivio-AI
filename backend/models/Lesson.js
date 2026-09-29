@@ -53,5 +53,10 @@ lessonSchema.set('toJSON', {
   virtuals: true
 });
 
+// Indexes for teacher+class queries
+lessonSchema.index({ teacher_id: 1 });
+lessonSchema.index({ teacher_id: 1, class_number: 1 });
+lessonSchema.index({ class_number: 1 });
+
 module.exports = mongoose.model('Lesson', lessonSchema);
 

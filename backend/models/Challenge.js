@@ -66,5 +66,10 @@ challengeSchema.set('toJSON', {
   virtuals: true
 });
 
+// Indexes
+challengeSchema.index({ teacher_id: 1 });
+challengeSchema.index({ class_number: 1 });
+challengeSchema.index({ status: 1 });
+
 module.exports = mongoose.model('Challenge', challengeSchema);
 

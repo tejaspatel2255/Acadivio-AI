@@ -50,7 +50,12 @@ const challengeSubmissionSchema = new mongoose.Schema({
     ref: 'User',
     default: null
   }
-});
+}, { timestamps: { createdAt: 'submitted_at', updatedAt: 'reviewed_at' } });
+
+// Indexes
+challengeSubmissionSchema.index({ challenge_id: 1, student_id: 1 });
+challengeSubmissionSchema.index({ student_id: 1 });
+challengeSubmissionSchema.index({ challenge_id: 1, status: 1 });
 
 module.exports = mongoose.model('ChallengeSubmission', challengeSubmissionSchema);
 

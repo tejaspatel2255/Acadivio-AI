@@ -50,4 +50,9 @@ const internalAssessmentSchema = new mongoose.Schema({
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
+// Indexes for frequent queries
+internalAssessmentSchema.index({ student_id: 1, semester: 1 });
+internalAssessmentSchema.index({ teacher_id: 1, subject_name: 1 });
+internalAssessmentSchema.index({ student_id: 1, subject_name: 1, semester: 1 });
+
 module.exports = mongoose.model('InternalAssessment', internalAssessmentSchema);

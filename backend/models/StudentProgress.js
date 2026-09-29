@@ -23,7 +23,12 @@ const studentProgressSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
+
+// Indexes for fast lookup
+studentProgressSchema.index({ student_id: 1, lesson_id: 1 }, { unique: true });
+studentProgressSchema.index({ student_id: 1 });
+studentProgressSchema.index({ lesson_id: 1 });
 
 module.exports = mongoose.model('StudentProgress', studentProgressSchema);
 

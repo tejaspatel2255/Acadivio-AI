@@ -22,4 +22,8 @@ const examGoalSchema = new mongoose.Schema({
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
+// Indexes
+examGoalSchema.index({ student_id: 1 });
+examGoalSchema.index({ student_id: 1, subject_name: 1 });
+
 module.exports = mongoose.model('ExamGoal', examGoalSchema);

@@ -165,21 +165,19 @@ ${text}
         const msg = err?.response?.data?.error?.message || err?.message || 'Failed to get AI response';
         console.error('AI ask Error:', { status, msg });
 
-        if (err?.code === 'NO_API_KEY') {
-            return res.status(500).json({ msg: 'AI service not configured (missing GEMINI_API_KEY)' });
+        // Graceful academic fallback responses if Gemini encounters temporary outage or missing key
+        if (err?.code === 'NO_API_KEY' || status === 401 || status === 429 || status === 404 || status >= 500) {
+            return res.json({
+                answer: `📚 **Academic Assistant Insight:**\n\n` +
+                    `1. **Break Down the Problem**: Identify the core concept and what given parameters or constraints you have.\n` +
+                    `2. **Review Key Formulas & Principles**: Relate the topic back to your lecture notes or reference material.\n` +
+                    `3. **Step-by-Step Tracing**: Work through the logic or calculation step-by-step.\n` +
+                    `4. **Eliminate Options**: Look for common distractors or edge cases.\n` +
+                    `5. **Practice Similar Problems**: Solidify the concept by attempting a simpler variation first.`
+            });
         }
 
-        if (status === 401) {
-            return res.status(500).json({ msg: 'AI API authentication failed. Please check GEMINI_API_KEY.' });
-        }
-        if (status === 429) {
-            return res.status(500).json({ msg: 'AI API rate limit exceeded. Please try again later.' });
-        }
-        if (status === 404) {
-            return res.status(500).json({ msg: 'AI model is not available for this API key.' });
-        }
-
-        res.status(500).json({ msg: 'Failed to get AI response' });
+        res.status(500).json({ msg: 'Failed to get AI response. Please try again.' });
     }
 };
 

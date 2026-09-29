@@ -58,5 +58,11 @@ quizSchema.set('toJSON', {
   virtuals: true
 });
 
+// Indexes
+quizSchema.index({ teacher_id: 1 });
+quizSchema.index({ teacher_id: 1, class_number: 1 });
+quizSchema.index({ class_number: 1 });
+quizSchema.index({ lesson_id: 1 });
+
 module.exports = mongoose.model('Quiz', quizSchema);
 

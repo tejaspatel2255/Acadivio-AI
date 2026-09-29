@@ -147,53 +147,62 @@ ${subjectDistributionString}
 
 TOTAL QUESTIONS: 25
 
-========================
-ANALYSIS RULES
-========================
+=======================
+ANALYSIS & DIFFICULTY BRACKET RULES (STRICT)
+=======================
 1. Generate questions ONLY from subjects listed in Exam Planner.
 2. ALL subjects must be included (no skipping).
 3. FOLLOW THE STRICT DISTRIBUTION LISTED ABOVE.
 4. Each subject must have at least ONE question.
 5. Total questions MUST be exactly 25.
 
-Difficulty rules (subject-wise):
-- Weak performance → EASY + MEDIUM
-- Average performance → MEDIUM
-- Strong performance → MEDIUM + HARD
+DIFFICULTY BRACKET SPECIFICATIONS:
+- BEGINNER (Student composite/subject score < 60%):
+  * Target: EASY (60%) + MEDIUM (40%) questions.
+  * Focus on fundamental definitions, core syntax, step-by-step logic, and direct concept application.
+  * Avoid tricky multi-layered edge cases.
+- INTERMEDIATE (Student composite/subject score 60% - 85%):
+  * Target: MEDIUM (70%) + HARD (30%) questions.
+  * Focus on algorithmic analysis, code tracing, time complexity, and practical problem-solving.
+- EXPERT (Student composite/subject score > 85%):
+  * Target: HARD (80%) + EXPERT CHALLENGE (20%) questions.
+  * Focus on edge cases, multi-step problem solving, optimization, architecture, and advanced application scenarios.
 
-Difficulty MUST adapt using BOTH:
-- Exam Planner marks
-- Previous quiz performance
+=======================
+FOCUS AREA & WEAK-TOPIC RULES (VERY IMPORTANT)
+=======================
+- Primary focus areas originate from:
+  1. Teacher-identified weak topics in Internal Assessments.
+  2. Repeated mistakes from previous quiz attempts.
+- A MAJORITY (>60%) of questions in a subject MUST target its weak focus areas.
+- Repeatedly incorrect focus areas must appear with modified, novel test scenarios.
+- Do NOT generate questions outside of the specified academic subjects and focus areas (STRICTLY NO general knowledge, trivia, or unrelated fields).
+- Ensure question and option uniqueness:
+  * No duplicate questions.
+  * No duplicate options within any question.
+  * Exactly 4 distinct options per MCQ.
+  * Exactly 1 correct answer.
+  * Detailed educational explanation for every question.
 
-========================
-FOCUS AREA RULES (VERY IMPORTANT)
-========================
-- Focus areas come from Exam Planner AND previous quiz mistakes.
-- A MAJORITY of questions must target weak focus areas.
-- Repeatedly incorrect focus areas must appear again in the next quiz.
-- If focus areas are empty, cover the core syllabus.
-- Focus-area questions should be slightly more challenging over time
-  if the student shows improvement.
-
-========================
+=======================
 QUESTION RULES
-========================
-- STRICTLY academic and engineering-related
+=======================
+- STRICTLY academic and engineering/computer science-related
 - Suitable for university examinations
 - No environmental, general knowledge, or unrelated content
-- Avoid repetition and vague wording
+- Avoid repetition, ambiguity, and vague wording
 
-========================
+=======================
 MCQ FORMAT RULES
-========================
+=======================
 - Multiple Choice Questions only
-- Exactly 4 options per question
-- Only ONE correct answer
-- Provide a brief explanation
+- Exactly 4 options per question (Option A, Option B, Option C, Option D)
+- Only ONE correct answer (must match one of the 4 options)
+- Provide a brief, high-yield explanation
 
-========================
+=======================
 OUTPUT FORMAT (STRICT)
-========================
+=======================
 Return a single JSON object with TWO keys only:
 1. "quiz"
 2. "remarks"
@@ -205,12 +214,12 @@ QUIZ ARRAY FORMAT
 ------------------------
 "quiz": [
   {
-    "question": "Question text",
-    "options": ["Option A", "Option B", "Option C", "Option D"],
-    "correctAnswer": "Option A",
-    "explanation": "Why this option is correct",
+    "question": "Clear, specific question text",
+    "options": ["Option A text", "Option B text", "Option C text", "Option D text"],
+    "correctAnswer": "Option A text",
+    "explanation": "Concise step-by-step explanation of why this answer is correct",
     "subject": "Exact subject name from Exam Planner",
-    "focusArea": "Related focus topic (if applicable)",
+    "focusArea": "Specific focus area topic name",
     "difficulty": "easy | medium | hard"
   }
 ]
@@ -219,48 +228,51 @@ QUIZ ARRAY FORMAT
 REMARKS FORMAT
 ------------------------
 "remarks": {
-  "overallFeedback": "Short motivational academic feedback",
-  "strengths": ["Subject or topic where student performed well"],
-  "weakAreas": ["Subjects or focus areas needing improvement"],
-  "recommendation": "Actionable study advice for next attempt"
+  "overallFeedback": "Short motivational academic feedback summarizing performance",
+  "strengths": ["Specific subjects or concepts where student performed well"],
+  "weakAreas": ["Specific weak focus areas requiring immediate revision"],
+  "recommendation": "Actionable, concrete study advice for next attempt"
 }
 
-========================
+=======================
 CRITICAL CONSTRAINTS
-========================
+=======================
 - Quiz MUST contain exactly 25 questions
 - JSON must be directly parsable
 - Subject names must match Exam Planner exactly
 - Remarks must be concise, academic, and constructive
-- Do NOT mention marks or internal analysis
-- Do NOT ask the student any questions
+- Do NOT mention internal marks or backend algorithm details
+- Do NOT ask the student questions in the remarks
 
-You are acting as an expert engineering faculty member and learning analyst.
-This system continuously improves quizzes using past performance.
-Generate the adaptive academic quiz and remarks now.
-
-========================
+=======================
 ACTUAL INPUT DATA
-========================
+=======================
 ${JSON.stringify(contextData, null, 2)}
     
-========================
+=======================
 ADAPTIVE DIFFICULTY INSTRUCTIONS (CRITICAL)
-========================
-${contextData.previousQuizRemarks?.highPerformanceMode ?
+=======================
+${contextData.previousQuizRemarks?.difficultyTier === 'expert' || contextData.previousQuizRemarks?.highPerformanceMode ?
             `
-⚠️ STUDENT PERFORMED EXCEPTIONALLY WELL (>75%) IN LAST QUIZ.
+⚠️ STUDENT CLASSIFIED AS EXPERT (>85% performance).
 1. INCREASE DIFFICULTY LEVEL: Questions must be significantly harder (Level +1).
-   - Move from simple recall to application, analysis, and problem-solving.
-   - Use complex scenarios and multi-step problems.
-2. ENSURE UNIQUENESS: 
-   - DO NOT repeat questions from standard pools.
-   - Change numerical values, variable names, and contexts entirely.
-   - If a concept is repeated, ask it from a completely different angle.
+   - Move from simple recall to deep application, algorithmic analysis, and multi-step problem solving.
+   - Test complex edge cases.
+2. ENSURE COMPLETE NOVELTY: 
+   - DO NOT use basic boilerplate questions.
+   - Vary data structures, numerical constants, and problem contexts.
+` : contextData.previousQuizRemarks?.difficultyTier === 'beginner' ?
+            `
+⚠️ STUDENT CLASSIFIED AS BEGINNER (<60% performance).
+1. FOCUS ON FOUNDATIONS:
+   - Provide clear, conceptual questions targeting weak areas to build mastery.
+   - Emphasize foundational principles, core mechanics, and basic syntax.
 ` :
             `
-Student performance is standard. Maintain a balanced difficulty curve based on the "Difficulty rules" section.
-`}
+⚠️ STUDENT CLASSIFIED AS INTERMEDIATE (60%-85% performance).
+- Provide balanced conceptual and practical problem-solving questions.
+`
+        }
     `;
 
     try {

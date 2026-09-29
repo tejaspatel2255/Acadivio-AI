@@ -37,10 +37,29 @@ router.get('/', authMiddleware, async (req, res) => {
         teacherIds = teachers.map(t => t._id);
       }
 
-      // Allow global challenges OR institution challenges
-      query.$or = [
-        { is_global: true },
-        { teacher_id: { $in: teacherIds } }
+      // Allow global challenges OR institution challenges matching student's semester/class
+      const userClass = req.user.standard || req.user.semester;
+      let classQuery = {};
+      if (userClass) {
+        const s = String(userClass);
+        classQuery = {
+          $or: [
+            { class_number: { $exists: false } },
+            { class_number: null },
+            { class_number: '' },
+            { class_number: { $regex: new RegExp(`^(Sem|Semester|Standard|Grade)?\\s*${s}$`, 'i') } }
+          ]
+        };
+      }
+
+      query.$and = [
+        {
+          $or: [
+            { is_global: true },
+            { teacher_id: { $in: teacherIds } }
+          ]
+        },
+        classQuery
       ];
     }
 

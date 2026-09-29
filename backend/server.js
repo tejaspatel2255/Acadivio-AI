@@ -92,9 +92,29 @@ const { Server } = require('socket.io');
 // Start server with automatic port detection and single database connection pool startup
 async function startServer() {
   try {
-    // Validate required JWT_SECRET at server launch
-    if (!process.env.JWT_SECRET) {
-      console.error('❌ FATAL SECURITY ERROR: JWT_SECRET environment variable is missing.');
+    // Validate ALL required environment variables at server launch
+    const REQUIRED_ENV = {
+      MONGODB_URI: 'MongoDB connection string',
+      JWT_SECRET: 'JWT signing secret (min 32 chars)',
+      GEMINI_API_KEY: 'Google Gemini API key for AI features',
+    };
+
+    const missing = [];
+    for (const [key, desc] of Object.entries(REQUIRED_ENV)) {
+      if (!process.env[key]) {
+        missing.push(`  ❌ ${key} — ${desc}`);
+      }
+    }
+
+    // Additional check: JWT_SECRET must not be a weak default
+    if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
+      missing.push(`  ❌ JWT_SECRET — must be at least 32 characters long (got ${process.env.JWT_SECRET.length})`);
+    }
+
+    if (missing.length > 0) {
+      console.error('\n🚨 FATAL: Missing or invalid required environment variables:');
+      console.error(missing.join('\n'));
+      console.error('\n💡 Copy backend/.env.example to backend/.env and fill in all values.\n');
       process.exit(1);
     }
 
